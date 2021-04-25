@@ -8,7 +8,7 @@ description = "Simple futures for use in async operations."
 homepage = "https://github.com/Buzzec/simple_futures"
 repository = "https://github.com/Buzzec/simple_futures"
 readme = "README.md"
-categories = ["futures"]
+categories = ["asynchronous"]
 keywords = ["futures"]
 exclude = [
     ".idea/*",
