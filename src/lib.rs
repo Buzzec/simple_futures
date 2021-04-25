@@ -1,6 +1,6 @@
 //! Simple futures for use in async operations.
 #![cfg_attr(not(test), no_std)]
-#![warn(missing_docs, missing_debug_implementations, unused_import_braces)]
+#![warn(missing_docs, missing_debug_implementations, unused_import_braces, unsafe_code)]
 
 #[cfg(feature = "alloc")]
 extern crate alloc;
@@ -20,6 +20,7 @@ pub mod test {
     use std::sync::Arc;
     use std::task::{RawWaker, RawWakerVTable, Waker};
 
+    #[allow(unsafe_code)]
     static WAKER_VTABLE: RawWakerVTable = RawWakerVTable::new(
         |ptr| {
             let ptr_val = unsafe { Arc::from_raw(ptr as *const AtomicUsize) };
@@ -41,6 +42,7 @@ pub mod test {
         },
     );
 
+    #[allow(unsafe_code)]
     pub fn get_waker(wake_count: Arc<AtomicUsize>) -> Waker {
         unsafe {
             Waker::from_raw(RawWaker::new(
