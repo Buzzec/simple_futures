@@ -111,26 +111,29 @@ struct ValueFutureInner<T> {
 }
 
 #[cfg(test)]
-mod test{
-    use crate::value_future::ValueFuture;
-    use alloc::sync::Arc;
-    use core::sync::atomic::{AtomicUsize, Ordering};
-    use core::task::{Context, Poll};
+mod test {
     use crate::test::get_waker;
-    use core::pin::Pin;
-    use core::future::Future;
+    use crate::value_future::ValueFuture;
     use rand::{thread_rng, Rng};
+    use std::future::Future;
+    use std::pin::Pin;
+    use std::sync::atomic::{AtomicUsize, Ordering};
+    use std::sync::Arc;
+    use std::task::{Context, Poll};
 
     #[test]
-    fn functionality_test(){
+    fn functionality_test() {
         for _ in 0..1024 {
             let mut value_future = ValueFuture::new();
             let wake_count = Arc::new(AtomicUsize::new(0));
-            assert!(Pin::new(&mut value_future).poll(&mut Context::from_waker(&get_waker(wake_count.clone()))).is_pending());
+            assert!(Pin::new(&mut value_future)
+                .poll(&mut Context::from_waker(&get_waker(wake_count.clone())))
+                .is_pending());
             let value: usize = thread_rng().gen();
             assert!(value_future.assign(value).is_ok());
             assert_eq!(1, wake_count.load(Ordering::SeqCst));
-            let result = Pin::new(&mut value_future).poll(&mut Context::from_waker(&get_waker(wake_count.clone())));
+            let result = Pin::new(&mut value_future)
+                .poll(&mut Context::from_waker(&get_waker(wake_count.clone())));
             match result {
                 Poll::Ready(future_value) => assert_eq!(future_value, value),
                 Poll::Pending => panic!("Result should be ready!"),

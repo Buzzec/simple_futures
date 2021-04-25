@@ -18,12 +18,12 @@
 //! assert!(!handle.complete().unwrap());
 //! ```
 
+use crate::{EnsureSend, EnsureSync};
 use alloc::sync::{Arc, Weak};
 use atomic_swapping::AtomicSwap;
 use core::future::Future;
 use core::pin::Pin;
 use core::task::{Context, Poll, Waker};
-use crate::{EnsureSend, EnsureSync};
 
 /// A future that only completes without returning a value
 #[derive(Debug)]
@@ -86,8 +86,8 @@ impl Future for CompleteFuture {
         }
     }
 }
-impl EnsureSend for CompleteFuture{}
-impl EnsureSync for CompleteFuture{}
+impl EnsureSend for CompleteFuture {}
+impl EnsureSync for CompleteFuture {}
 
 /// A completion handle for [`CompleteFuture`]. Meant to be sent where the work
 /// is actually getting done.
@@ -122,8 +122,8 @@ impl CompleteFutureHandle {
         }
     }
 }
-impl EnsureSend for CompleteFutureHandle{}
-impl EnsureSync for CompleteFutureHandle{}
+impl EnsureSend for CompleteFutureHandle {}
+impl EnsureSync for CompleteFutureHandle {}
 
 /// The inside of a complete future, intended to be passed to the function doing
 /// the work
@@ -134,22 +134,26 @@ struct CompleteFutureInner {
 }
 
 #[cfg(test)]
-mod test{
+mod test {
     use crate::complete_future::CompleteFuture;
-    use core::future::Future;
-    use core::pin::Pin;
-    use core::task::Context;
-    use core::sync::atomic::{AtomicUsize, Ordering};
-    use alloc::sync::Arc;
     use crate::test::get_waker;
+    use std::future::Future;
+    use std::pin::Pin;
+    use std::sync::atomic::{AtomicUsize, Ordering};
+    use std::sync::Arc;
+    use std::task::Context;
 
     #[test]
-    fn functionality_test(){
+    fn functionality_test() {
         let mut complete_future = CompleteFuture::new();
         let wake_count = Arc::new(AtomicUsize::new(0));
-        assert!(Pin::new(&mut complete_future).poll(&mut Context::from_waker(&get_waker(wake_count.clone()))).is_pending());
+        assert!(Pin::new(&mut complete_future)
+            .poll(&mut Context::from_waker(&get_waker(wake_count.clone())))
+            .is_pending());
         assert!(!complete_future.complete());
         assert_eq!(1, wake_count.load(Ordering::SeqCst));
-        assert!(Pin::new(&mut complete_future).poll(&mut Context::from_waker(&get_waker(wake_count.clone()))).is_ready());
+        assert!(Pin::new(&mut complete_future)
+            .poll(&mut Context::from_waker(&get_waker(wake_count.clone())))
+            .is_ready());
     }
 }
