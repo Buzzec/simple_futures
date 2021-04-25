@@ -5,6 +5,7 @@ use atomic_swapping::AtomicSwap;
 use core::future::Future;
 use core::pin::Pin;
 use core::task::{Context, Poll, Waker};
+use crate::{EnsureSend, EnsureSync};
 
 /// A Future that returns a `T` and can be assigned from inner
 #[derive(Debug)]
@@ -71,6 +72,8 @@ impl<T> Future for ValueFuture<T> {
         }
     }
 }
+impl<T> EnsureSend for ValueFuture<T> where T: Send{}
+impl<T> EnsureSync for ValueFuture<T> where T: Send + Sync{}
 
 /// A handle for [`ValueFuture`]. Meant to be sent where the work
 /// is actually getting done.
