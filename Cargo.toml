@@ -1,0 +1,25 @@
+[package]
+name = "simple_futures"
+version = "0.1.0"
+authors = ["buzzec <buzzec@buzzec.net>"]
+edition = "2018"
+license = "MIT OR Apache-2.0"
+description = "Simple futures for use in async operations."
+homepage = "https://github.com/Buzzec/simple_futures"
+repository = "https://github.com/Buzzec/simple_futures"
+readme = "README.md"
+categories = ["futures"]
+keywords = ["futures"]
+exclude = [
+    ".idea/*",
+]
+
+[dependencies]
+atomic_swapping = "0.1.0"
+
+[dev-dependencies]
+rand = "0.8.3"
+
+[features]
+default = ["alloc"]
+alloc = []
