@@ -7,9 +7,9 @@ extern crate alloc;
 
 pub mod atomic_state;
 #[cfg(feature = "alloc")]
-pub mod race_future;
-#[cfg(feature = "alloc")]
 pub mod complete_future;
+#[cfg(feature = "alloc")]
+pub mod race_future;
 #[cfg(feature = "alloc")]
 pub mod value_future;
 
