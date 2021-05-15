@@ -23,6 +23,7 @@ jobs:
         features:
           - ""
           - --features alloc
+          - --features std
 
     steps:
       - name: Checkout sources

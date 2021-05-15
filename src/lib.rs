@@ -1,10 +1,13 @@
 //! Simple futures for use in async operations.
-#![cfg_attr(not(test), no_std)]
-#![warn(missing_docs, missing_debug_implementations, unused_import_braces, unsafe_code)]
+#![cfg_attr(not(any(test, feature = "std")), no_std)]
+#![warn(missing_docs, missing_debug_implementations, unused_import_braces)]
 
 #[cfg(feature = "alloc")]
 extern crate alloc;
 
+pub mod atomic_state;
+#[cfg(feature = "alloc")]
+pub mod race_future;
 #[cfg(feature = "alloc")]
 pub mod complete_future;
 #[cfg(feature = "alloc")]
