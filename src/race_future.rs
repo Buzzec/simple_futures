@@ -1,13 +1,13 @@
 //! A Future that races two futures and returns the first one to finish.
 
-use std::sync::Arc;
-use std::sync::atomic::{AtomicBool, Ordering, AtomicU8};
+use alloc::sync::Arc;
+use core::sync::atomic::{AtomicBool, Ordering, AtomicU8};
 use bitflags::bitflags;
-use std::future::Future;
-use std::task::{Context, Poll, Waker, RawWakerVTable, RawWaker};
-use std::pin::Pin;
+use core::future::Future;
+use core::task::{Context, Poll, Waker, RawWakerVTable, RawWaker};
+use core::pin::Pin;
 use atomic_swapping::option::AtomicSwapOption;
-use std::mem::forget;
+use core::mem::forget;
 
 /// A Future that races two futures and returns the first one to finish.
 #[derive(Debug)]
