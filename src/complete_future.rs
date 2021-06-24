@@ -1,5 +1,5 @@
-//! A future that only shows completion and no value, effectively outputting [`()`].
-//! ```
+//! A future that only shows completion and no value, effectively outputting
+//! [`()`]. ```
 //! # use std::sync::atomic::{AtomicUsize, Ordering};
 //! # use std::task::Context;
 //! # use std::pin::Pin;
@@ -10,7 +10,7 @@
 //! let complete_future = CompleteFuture::new();
 //! let handle = complete_future.get_handle();
 //! // Async
-//! let future = async move{
+//! let future = async move {
 //!     complete_future.await;
 //!     println!("Future done!")
 //! };
